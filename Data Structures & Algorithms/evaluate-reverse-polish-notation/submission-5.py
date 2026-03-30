@@ -1,0 +1,27 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        # so RPN works by pushing values onto our stack
+        # once we reach an operator (+, -, /, *) we pop last two numbers off stack perform calculation and push it onto stack
+        # we continue process until we reach the end? / empty stack and return final result
+        operation = ["+", "-", "*", "/"]
+        stack = []
+
+        for c in tokens:
+            if c not in operation:
+                stack.append(int(c))
+            else:
+                rightOp = stack.pop()
+                leftOp = stack.pop()
+                if c =="*":
+                    res = leftOp * rightOp
+                elif c=="/":
+                    res = int(leftOp / rightOp)
+                elif c=="+":
+                    res = leftOp + rightOp
+                else:
+                    res = res = leftOp - rightOp
+                stack.append(res)
+        if stack:
+            return stack.pop()
+        else:
+            return 0
