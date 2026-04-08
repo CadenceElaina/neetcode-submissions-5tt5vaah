@@ -1,25 +1,32 @@
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        left = 0
-        right = len(nums)-1
-        # two cases: l and mid belong to the left sorted segment, or mid and r belong to the right sorted segment.
+        # The sorted half is either the first or second half.
+        # We identify it by comparing the first index against the mid index.
+        l = 0
+        r = len(nums) - 1
 
-        while left <= right:
-            mid = (left + right) // 2
-            if nums[mid] == target:
-                return mid
+        while l <= r:
+            m = (l + r) // 2
+
+            if nums[m] == target:
+                return m
+
             # Identify the sorted half
-            if nums[left] <= nums[mid]:
-                # is our target between the mid and left pointers?
-                if nums[left] <= target < nums[mid]: 
-                    right = mid - 1 # target is in our sorted left half
+            if nums[l] <= nums[m]:
+                # Left half is sorted
+                # Is our target within this sorted range?
+                if nums[l] <= target < nums[m]:
+                    r = m - 1
                 else:
-                    left = mid + 1 # target is in right half
+                    # Target must be in the right half
+                    l = m + 1
             else:
-                # right half is sorted
-                if nums[mid] < target <= nums[right]:
-                    left = mid + 1 # target is in the sorted right half
+                # Right half is sorted
+                # Is our target within this sorted range?
+                if nums[m] < target <= nums[r]:
+                    l = m + 1
                 else:
-                    right = mid -1 #target is in our left half
+                    # Target must be in the left half
+                    r = m - 1
+
         return -1
-        
